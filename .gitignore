@@ -2,3 +2,4 @@
 **/penv/
 **/venv/
 **/__pycache__/
+.env
