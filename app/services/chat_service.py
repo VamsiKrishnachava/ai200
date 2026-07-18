@@ -9,3 +9,9 @@ class ChatService:
             raise ChatNoMessageException("Provide a valid message to process.")
         return ChatResponse(response=f"""Received message: {chat_request.message} 
                             and env has sam : {settings.sample} and gone : {settings.gone}""")
+    
+
+    def upper_message(self, chat_request: ChatRequest) -> ChatResponse:
+        if not chat_request.message or chat_request.message.strip() == "":
+            raise ChatNoMessageException("Provide a valid message to process.")
+        return ChatResponse(response=chat_request.message.upper())
