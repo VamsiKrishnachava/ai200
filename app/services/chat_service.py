@@ -13,5 +13,5 @@ class ChatService:
 
     def upper_message(self, chat_request: ChatRequest) -> ChatResponse:
         if not chat_request.message or chat_request.message.strip() == "":
-            raise ChatNoMessageException("Provide a valid message to process.")
+            raise ChatNoMessageException("The provided message is empty.")
         return ChatResponse(response=chat_request.message.upper())
