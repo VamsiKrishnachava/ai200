@@ -2,14 +2,13 @@ FROM python:3.12-slim
 
 WORKDIR /application
 
+RUN useradd --create-home appuser
+
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app ./app
-
-RUN useradd --create-home appuser \
-    && chown -R appuser:appuser /application
+COPY --chown=appuser:appuser app ./app
 
 USER appuser
 
