@@ -27,6 +27,14 @@ jobs:
           pip install -r requirements-dev.txt
 
       - name: Run tests
+        env:
+          SAMPLE: test
+          GONE: test
+          DATABASE_HOST: localhost
+          DATABASE_PORT: "5432"
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
         run: |
           python -m pytest
 
