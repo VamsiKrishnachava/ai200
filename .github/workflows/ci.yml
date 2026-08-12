@@ -8,13 +8,10 @@ on:
     branches:
       - master
 
-<<<<<<< HEAD
 permissions:
   id-token: write
   contents: read
 
-=======
->>>>>>> master
 jobs:
   test:
     runs-on: ubuntu-latest
