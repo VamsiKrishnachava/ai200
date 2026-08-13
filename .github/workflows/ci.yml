@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  post-image-to-acr:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
