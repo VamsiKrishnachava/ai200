@@ -1,4 +1,4 @@
-name: POST IMAGE TO ACR
+name: deploy
 
 on:
   push:
