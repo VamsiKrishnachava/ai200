@@ -31,6 +31,10 @@ jobs:
           POSTGRES_USER: testuser
           POSTGRES_PASSWORD: testpassword
           POSTGRES_DB: testdb
+          AZURE_OPENAI_ENDPOINT: str
+          AZURE_OPENAI_API_KEY: str
+          AZURE_OPENAI_DEPLOYMENT: str
+
         run: |
           python -m pytest
 
