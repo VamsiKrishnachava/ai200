@@ -1,9 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from app.schemas.chat import ChatRequest, ChatResponse
 from app.services.chat_service import ChatService
+from app.core.dependencies import get_chat_service
 
-chatService = ChatService()
 
 router = APIRouter(
     prefix = "/api/v1",
@@ -11,10 +11,11 @@ router = APIRouter(
 )
 
 @router.post("/chat", response_model=ChatResponse)
-def chat(chat_request: ChatRequest, response : Response):
-    return chatService.process_message(chat_request)
+async def chat(chat_request: ChatRequest, response : Response,
+               service: ChatService = Depends(get_chat_service),):
+    return await service.generate(chat_request)
 
 @router.post("/upper", response_model=ChatResponse)
-def upper(chat_request: ChatRequest):
+def upper(chat_request: ChatRequest, service: ChatService = Depends(get_chat_service)):
     """This endpoint takes a message and returns the message in uppercase."""
-    return chatService.upper_message(chat_request)
+    return service.upper_message(chat_request)
