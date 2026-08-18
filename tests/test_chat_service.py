@@ -4,7 +4,7 @@ from app.services.chat_service import ChatService
 
 
 class FakeLLMClient:
-    async def generate(self, message):
+    async def generate(self, messages):
         class Message:
             content = "Fake AI response"
 
