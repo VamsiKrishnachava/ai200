@@ -1,4 +1,4 @@
-from app.schemas.chat import ChatRequest, ChatResponse
+from app.schemas.chat import ChatRequest, ChatResponse, AIResponse
 from app.core.settings import settings
 from app.exceptions.chat import ChatNoMessageException
 from app.clients.azure_openai import AzureOpenAIClient
@@ -27,7 +27,8 @@ class ChatService:
             raise ChatNoMessageException("Provide a valid message to process.")
 
         response =  await self.llm_client.generate(
-            messages=[{"role": "user", "content": chat_request.message}]
+            messages=[{"role": "user", "content": chat_request.message}],
+            response_format=AIResponse
         )
 
-        return ChatResponse(response=response.choices[0].message.content)
+        return ChatResponse(response=response.choices[0].message.parsed.key_points[0] if response.choices[0].message.parsed.answer)
