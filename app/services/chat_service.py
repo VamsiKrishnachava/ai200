@@ -31,4 +31,4 @@ class ChatService:
             response_format=AIResponse
         )
 
-        return ChatResponse(response=response.choices[0].message.parsed.key_points[0] if response.choices[0].message.parsed.answer)
+        return ChatResponse(response=response.choices[0].message.parsed.answer if response.choices[0].message.parsed.answer else "")
