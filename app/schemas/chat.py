@@ -5,3 +5,7 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     response: str
+
+class AIResponse(BaseModel):
+    answer: str
+    key_points: list[str]

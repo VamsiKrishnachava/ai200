@@ -1,7 +1,8 @@
-from app.schemas.chat import ChatRequest, ChatResponse
+from app.schemas.chat import ChatRequest, ChatResponse, AIResponse
 from app.core.settings import settings
 from app.exceptions.chat import ChatNoMessageException
 from app.clients.azure_openai import AzureOpenAIClient
+from app.prompts.v1 import SYSTEM_PROMPT
 from openai import OpenAI
 
 class ChatService:
@@ -27,7 +28,18 @@ class ChatService:
             raise ChatNoMessageException("Provide a valid message to process.")
 
         response =  await self.llm_client.generate(
-            messages=[{"role": "user", "content": chat_request.message}]
+            messages=[{"role": "system", 
+                       "content": SYSTEM_PROMPT},
+                      {"role": "user", 
+                       "content": chat_request.message}],
+            response_format=AIResponse
         )
 
-        return ChatResponse(response=response.choices[0].message.content)
+        message = response.choices[0].message
+
+        if message.refusal:
+            raise ChatNoMessageException(f"The AI refused to answer: {message.refusal}")
+        elif not message.parsed or not message.parsed.answer:
+            raise ChatNoMessageException("The AI did not provide a valid response.")
+
+        return ChatResponse(response=response.choices[0].message.parsed.answer if response.choices[0].message.parsed.answer else "")
