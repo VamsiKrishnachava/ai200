@@ -21,14 +21,43 @@ class AzureOpenAIClient:
         )
 
     async def generate(self, messages, response_format):
-        parse_fn = self.client.beta.chat.completions.parse
-        request_kwargs = {
-            "model": settings.AZURE_OPENAI_DEPLOYMENT,
-            "messages": messages,
-            "response_format": response_format,
-        }
+        result = self.client.beta.chat.completions.parse(
+            model=settings.AZURE_OPENAI_DEPLOYMENT,
+            messages=messages,
+            response_format=response_format,
+        )
+        
+        # Check if result is a coroutine and await it if necessary
+        if asyncio.iscoroutine(result):
+            return await result
+        
+        return result
 
-        if asyncio.iscoroutinefunction(parse_fn):
-            return await parse_fn(**request_kwargs)
 
-        return await asyncio.to_thread(parse_fn, **request_kwargs)
+    async def generate_with_tools(self, messages, tools):
+        result = self.client.responses.create(
+            model=settings.AZURE_OPENAI_DEPLOYMENT,
+            messages=messages,
+            tools=tools,
+        )
+        
+        # Check if result is a coroutine and await it if necessary
+        if asyncio.iscoroutine(result):
+            return await result
+        
+        return result
+
+    async def generate_with_tools_latest(self, input, instructions=None, tools=None, previous_response_id=None):
+            result = self.client.responses.create(
+                model=settings.AZURE_OPENAI_DEPLOYMENT,
+                input=input,
+                tools=tools,
+                instructions=instructions,
+                previous_response_id=previous_response_id
+            )
+            
+            # Check if result is a coroutine and await it if necessary
+            if asyncio.iscoroutine(result):
+                return await result
+            
+            return result
