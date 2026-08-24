@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 @router.post("/chat", response_model=ChatResponse)
-async def chat(chat_request: ChatRequest, response : Response,
+async def chat(chat_request: ChatRequest,
                service: ChatService = Depends(get_chat_service),):
     return await service.generate(chat_request)
 
@@ -19,3 +19,11 @@ async def chat(chat_request: ChatRequest, response : Response,
 def upper(chat_request: ChatRequest, service: ChatService = Depends(get_chat_service)):
     """This endpoint takes a message and returns the message in uppercase."""
     return service.upper_message(chat_request)
+
+@router.post("/tool", response_model=ChatResponse)
+async def tool(chat_request: ChatRequest,
+               service: ChatService = Depends(get_chat_service),
+               latest: bool = False):
+    if latest:
+        return await service.generate_with_tools_latest(chat_request)
+    return await service.generate_with_tools(chat_request)

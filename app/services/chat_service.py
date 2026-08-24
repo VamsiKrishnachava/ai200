@@ -1,9 +1,15 @@
+import asyncio
+import json
+
 from app.schemas.chat import ChatRequest, ChatResponse, AIResponse
 from app.core.settings import settings
 from app.exceptions.chat import ChatNoMessageException
 from app.clients.azure_openai import AzureOpenAIClient
 from app.prompts.v1 import SYSTEM_PROMPT
+from app.tools.defnitions import CALCULATOR_TOOLS, CALCULATOR_TOOLS_RESPONSES
 from openai import OpenAI
+
+from app.tools.tool_functions import TOOL_FUNCTIONS
 
 class ChatService:
 
