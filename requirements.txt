@@ -3,3 +3,4 @@ fastapi
 pydantic-settings
 psycopg[binary]
 openai
+sentence-transformers
